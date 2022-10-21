@@ -34,6 +34,17 @@ class RegionBuilder {
     return Combine._(_polyBool, combined);
   }
 
+  Combine combineRegion(RegionPolygon regions) {
+    final list = regions.regions;
+    final inverted = regions.inverted;
+    if (list.isEmpty) return combine([]);
+    var builder = RegionBuilder._points(_polyBool, list.first, inverted);
+    for (final r in regions.regions.skip(1)) {
+      builder = builder.combine(r, inverted: inverted).union;
+    }
+    return Combine._(_polyBool, _combine(_segments, builder._segments));
+  }
+
   RegionPolygon get polygon {
     if (_polygon == null) {
       final chain = _SegmentChainer(_polyBool.epsilon).chain(_segments);
