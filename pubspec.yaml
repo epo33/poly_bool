@@ -1,0 +1,17 @@
+# this library is a port for flutter of polybooljs and base on poly_bool_dart
+# voir https://github.com/velipso/polybooljs
+#   et https://github.com/mohammedX6/poly_bool_dart/tree/master
+name: poly_bool
+description: Opérations booléenne sur les polygones (union, intersection, difference, xor)
+
+version: 1.0.0
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  collection: ^1.16.0
+
+dev_dependencies:
+  lints: ^2.0.0
+  test: ^1.21.6
