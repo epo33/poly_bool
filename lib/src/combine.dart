@@ -7,20 +7,20 @@ class Combine {
       : _polyBool = polyBool,
         _combined = combined;
 
-  RegionBuilder get union => _operation(_selectUnion);
+  Region get union => _operation(_selectUnion);
 
-  RegionBuilder get intersect => _operation(_selectIntersect);
+  Region get intersect => _operation(_selectIntersect);
 
-  RegionBuilder get difference => _operation(_selectDifference);
+  Region get difference => _operation(_selectDifference);
 
-  RegionBuilder get inverseDifference => _operation(_selectDifferenceRev);
+  Region get inverseDifference => _operation(_selectDifferenceRev);
 
-  RegionBuilder get xor => _operation(_selectXor);
+  Region get xor => _operation(_selectXor);
 
   // Private part
 
-  RegionBuilder _operation(_Selector selector) {
-    return RegionBuilder._segments(_polyBool, selector(_combined));
+  Region _operation(_Selector selector) {
+    return Region._segments(_polyBool, selector(_combined));
   }
 
   static _SegmentList _selectUnion(_CombinedSegmentLists combined) {

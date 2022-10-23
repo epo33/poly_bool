@@ -15,11 +15,11 @@ void main() {
         PointBuilder(0, 4).dY(1).dX(1).dY(1).dX(-1).dY(1).dX(5).dY(-3).points,
       );
 
-  print("union\n${combine.union.polygon}");
-  print("intersection\n${combine.intersect.polygon}");
-  print("difference\n${combine.difference.polygon}");
-  print("difference inversée\n${combine.inverseDifference.polygon}");
-  print("xor\n${combine.xor.polygon}");
+  print("union\n${combine.union}");
+  print("intersection\n${combine.intersect}");
+  print("difference\n${combine.difference}");
+  print("difference inversée\n${combine.inverseDifference}");
+  print("xor\n${combine.xor}");
 
   final points = square(0, 0, 10, 10);
   test(
@@ -27,7 +27,7 @@ void main() {
     () {
       final r1 = polyBool.region(points);
       final r2 = r1.combine(points);
-      expect(r2.union.polygon, RegionMatcher(r1.polygon));
+      expect(r2.union, RegionMatcher(r1));
     },
   );
   test(
@@ -36,8 +36,8 @@ void main() {
       final r1 = polyBool.region(points);
       final r2 = r1.combine(square(9, 9, 2, 2));
       expect(
-        r2.intersect.polygon,
-        RegionMatcher(polyBool.region(square(9, 9, 1, 1)).polygon),
+        r2.intersect,
+        RegionMatcher(polyBool.region(square(9, 9, 1, 1))),
       );
     },
   );
@@ -84,11 +84,11 @@ class PointBuilder {
 class RegionMatcher extends Matcher {
   RegionMatcher(this.region);
 
-  final RegionPolygon region;
+  final Region region;
 
   @override
   bool matches(dynamic item, Map matchState) =>
-      item is RegionPolygon && region == item;
+      item is Region && region == item;
 
   @override
   Description describe(Description description) =>

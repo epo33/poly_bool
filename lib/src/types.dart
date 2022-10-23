@@ -61,8 +61,8 @@ class Intersection {
   final IntersectionPos alongB;
 }
 
-class RegionPolygon {
-  RegionPolygon._({
+class _RegionPolygon {
+  _RegionPolygon._({
     required this.regions,
     this.inverted = false,
   }) : assert(!regions.any((r) => r.length < 3));
@@ -73,8 +73,8 @@ class RegionPolygon {
 
   bool get empty => regions.isEmpty;
 
-  RegionPolygon invert() =>
-      RegionPolygon._(regions: regions, inverted: !inverted);
+  _RegionPolygon invert() =>
+      _RegionPolygon._(regions: regions, inverted: !inverted);
 
   @override
   String toString() => [
@@ -88,7 +88,7 @@ class RegionPolygon {
 
   @override
   bool operator ==(Object other) {
-    if (other is! RegionPolygon ||
+    if (other is! _RegionPolygon ||
         other.inverted != inverted ||
         other.regions.length != regions.length) {
       return false;

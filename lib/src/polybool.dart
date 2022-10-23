@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:math' as math;
 
 import 'package:collection/collection.dart';
@@ -18,6 +19,6 @@ class PolyBool {
 
   final Epsilon epsilon;
 
-  RegionBuilder region(Points points, {bool inverted = false}) =>
-      RegionBuilder._normalized(this, points, inverted);
+  Region region(Points points, {bool inverted = false}) =>
+      Region._normalized(this, points, inverted);
 }
