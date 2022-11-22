@@ -1,5 +1,7 @@
 part of "polybool.dart";
 
+typedef AcceptPolyline = bool Function(Iterable<Coordinate> polyline);
+
 /// Représente une liste de polygones définis par leurs sommets
 ///
 /// Les invariants suivants sont respéctés :
@@ -17,21 +19,44 @@ class Region with IterableMixin<Points> implements Iterable<Points> {
     return Combine._(_polyBool, combined);
   }
 
-  Combine combineRegionOf(Region regions) {
-    final list = regions.regions;
-    final inverted = regions.inverted;
-    if (list.isEmpty) return combine([]);
-    var builder = Region._points(_polyBool, list.first, inverted);
-    for (final r in regions.regions.skip(1)) {
-      builder = builder.combine(r, inverted: inverted).union;
+  Combine combineRegionOf(
+    Region regions, {
+    AcceptPolyline accept = _acceptAll,
+  }) {
+    final list = regions.regions.where((r) => accept(r));
+    return combinePoints(list);
+  }
+
+  Combine combinePoints(Iterable<Points> regions) {
+    if (regions.isEmpty) return combine([]);
+    var builder = Region._points(_polyBool, regions.first, inverted);
+    for (final r in regions.skip(1)) {
+      builder = builder.combine(r, inverted: false).union;
     }
     return Combine._(_polyBool, _combine(_segments, builder._segments));
+  }
+
+  Region excluding(Region region) {
+    final intersect = combineRegionOf(region).intersect;
+    var result = _polyBool.emptyRegion();
+    for (final r in this) {
+      bool add = true;
+      for (final e in intersect) {
+        if (_polyBool.samePolylinePoints(r, e)) {
+          add = false;
+          break;
+        }
+      }
+      if (add) result = result.combine(r).union;
+    }
+    return result;
   }
 
   Iterable<Points> get regions => _needPolygon().regions;
 
   bool get empty => _needPolygon().empty;
 
+  @override
   int get length => _needPolygon().regions.length;
 
   bool get inverted => _needPolygon().inverted;
@@ -148,3 +173,5 @@ class Region with IterableMixin<Points> implements Iterable<Points> {
   final _SegmentList _segments;
   _RegionPolygon? _polygon;
 }
+
+bool _acceptAll(Iterable<Coordinate> polyline) => true;
