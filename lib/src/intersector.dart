@@ -126,7 +126,7 @@ class _Intersecter {
       region.add(region.first);
     }
     if (region.length < 4) {
-      throw ArgumentError("A region must be defined by at least 3 points");
+      return;
     }
 
     // regions are a list of points:
